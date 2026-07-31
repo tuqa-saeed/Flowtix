@@ -1,0 +1,579 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Flowtix — Voice of Customer Automation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:        #0A101C;
+    --panel:      #101A2C;
+    --panel-line: #1E2C42;
+    --paper:      #E9EDF3;
+    --muted:      #8B96AC;
+    --signal:     #2BD9A8;
+    --signal-dim: rgba(43,217,168,0.14);
+    --alert:      #FF7A56;
+
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:var(--font-body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{ color:inherit; }
+
+  ::selection{ background:var(--signal); color:var(--ink); }
+
+  :focus-visible{
+    outline:2px solid var(--signal);
+    outline-offset:3px;
+    border-radius:2px;
+  }
+
+  .wrap{
+    max-width:960px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  .mono-label{
+    font-family:var(--font-mono);
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--signal);
+  }
+
+  /* ---------- NAV ---------- */
+  header{
+    border-bottom:1px solid var(--panel-line);
+    position:sticky;
+    top:0;
+    background:rgba(10,16,28,0.86);
+    backdrop-filter:blur(10px);
+    z-index:20;
+  }
+  nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 0;
+  }
+  .logo{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:19px;
+    letter-spacing:-0.01em;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    text-decoration:none;
+    color:var(--paper);
+  }
+  .logo-mark{
+    width:20px; height:20px;
+    flex-shrink:0;
+  }
+  .nav-right{
+    display:flex;
+    align-items:center;
+    gap:16px;
+  }
+  .status-pill{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-family:var(--font-mono);
+    font-size:11px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--muted);
+    border:1px solid var(--panel-line);
+    padding:6px 12px;
+    border-radius:100px;
+  }
+  .status-dot{
+    width:6px; height:6px;
+    border-radius:50%;
+    background:var(--signal);
+    box-shadow:0 0 0 3px var(--signal-dim);
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 20px;
+    background:var(--signal);
+    color:var(--ink);
+    text-decoration:none;
+    border-radius:8px;
+    font-family:var(--font-body);
+    font-weight:600;
+    font-size:13.5px;
+    transition:transform .15s ease, box-shadow .15s ease;
+    white-space:nowrap;
+  }
+  .btn:hover{
+    transform:translateY(-1px);
+    box-shadow:0 6px 20px rgba(43,217,168,0.28);
+  }
+  .btn-ghost{
+    background:transparent;
+    color:var(--paper);
+    border:1px solid var(--panel-line);
+  }
+  .btn-ghost:hover{
+    border-color:var(--signal);
+    box-shadow:none;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:88px 0 40px;
+    border-bottom:1px solid var(--panel-line);
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.15fr 0.85fr;
+    gap:48px;
+    align-items:center;
+  }
+  .eyebrow{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:22px;
+  }
+  .eyebrow::before{
+    content:'';
+    width:26px; height:1px;
+    background:var(--signal);
+  }
+  h1{
+    font-family:var(--font-display);
+    font-size:44px;
+    line-height:1.1;
+    letter-spacing:-0.02em;
+    margin:0 0 20px;
+    font-weight:700;
+  }
+  h1 em{
+    font-style:normal;
+    color:var(--signal);
+  }
+  .hero p.lede{
+    font-size:16.5px;
+    color:var(--muted);
+    max-width:46ch;
+    margin:0 0 32px;
+  }
+  .hero-ctas{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+
+  /* signature: waveform -> bars */
+  .signal-card{
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    border-radius:14px;
+    padding:26px 22px 20px;
+  }
+  .signal-card .cap{
+    display:flex;
+    justify-content:space-between;
+    font-family:var(--font-mono);
+    font-size:11px;
+    color:var(--muted);
+    margin-bottom:14px;
+    letter-spacing:0.04em;
+  }
+  .signal-card .cap span:last-child{ color:var(--signal); }
+  svg.wave{ display:block; width:100%; height:auto; }
+
+  .wave-path{
+    fill:none;
+    stroke:var(--muted);
+    stroke-width:1.6;
+    stroke-linecap:round;
+    stroke-dasharray:420;
+    stroke-dashoffset:420;
+    animation:draw 1.6s ease forwards;
+  }
+  .bars rect{
+    fill:var(--signal);
+    opacity:0;
+    transform-box:fill-box;
+    transform-origin:bottom;
+    transform:scaleY(0);
+    animation:rise 0.5s ease forwards;
+  }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+  @keyframes rise{ to{ opacity:1; transform:scaleY(1); } }
+
+  .signal-card .foot{
+    display:flex;
+    justify-content:space-between;
+    margin-top:14px;
+    font-family:var(--font-mono);
+    font-size:11px;
+    color:var(--muted);
+  }
+
+  /* ---------- PROBLEM / SOLUTION ---------- */
+  .split{
+    padding:64px 0;
+    border-bottom:1px solid var(--panel-line);
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:0;
+  }
+  .split-col{
+    padding:0 40px;
+  }
+  .split-col:first-child{
+    border-right:1px solid var(--panel-line);
+    padding-left:0;
+  }
+  .split-col:last-child{ padding-right:0; }
+  .split-col h2{
+    font-family:var(--font-display);
+    font-size:22px;
+    margin:14px 0 14px;
+    font-weight:600;
+  }
+  .split-col p{
+    color:var(--muted);
+    font-size:15px;
+    margin:0;
+  }
+
+  /* ---------- WORKFLOW RAIL ---------- */
+  .rail-section{
+    padding:64px 0;
+    border-bottom:1px solid var(--panel-line);
+  }
+  .rail-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom:28px;
+    gap:20px;
+    flex-wrap:wrap;
+  }
+  .rail-head h2{
+    font-family:var(--font-display);
+    font-size:24px;
+    margin:8px 0 0;
+    font-weight:600;
+  }
+  .rail-head p{
+    color:var(--muted);
+    font-size:14px;
+    margin:6px 0 0;
+    max-width:40ch;
+  }
+  .rail{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:1px;
+    background:var(--panel-line);
+    border:1px solid var(--panel-line);
+    border-radius:12px;
+    overflow:hidden;
+  }
+  .rail-item{
+    background:var(--panel);
+    padding:20px 18px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .rail-item .n{
+    font-family:var(--font-mono);
+    font-size:12px;
+    color:var(--signal);
+  }
+  .rail-item .t{
+    font-size:14px;
+    font-weight:500;
+    color:var(--paper);
+  }
+
+  /* ---------- STAGE ---------- */
+  .stage-section{
+    padding:64px 0;
+    border-bottom:1px solid var(--panel-line);
+  }
+  .stage-section h2{
+    font-family:var(--font-display);
+    font-size:24px;
+    margin:8px 0 30px;
+    font-weight:600;
+  }
+  .stage-track{
+    position:relative;
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+  }
+  .stage-track::before{
+    content:'';
+    position:absolute;
+    top:6px; left:0; right:0;
+    height:1px;
+    background:var(--panel-line);
+  }
+  .stage-track::after{
+    content:'';
+    position:absolute;
+    top:6px; left:0;
+    width:66%;
+    height:1px;
+    background:var(--signal);
+  }
+  .stage{
+    position:relative;
+    flex:1;
+    padding-top:24px;
+    text-align:left;
+  }
+  .stage .dot{
+    position:absolute;
+    top:0; left:0;
+    width:13px; height:13px;
+    border-radius:50%;
+    background:var(--ink);
+    border:2px solid var(--panel-line);
+  }
+  .stage.done .dot{ border-color:var(--signal); background:var(--signal); }
+  .stage.current .dot{
+    border-color:var(--signal);
+    background:var(--ink);
+    box-shadow:0 0 0 4px var(--signal-dim);
+  }
+  .stage .label{
+    font-family:var(--font-mono);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--muted);
+  }
+  .stage.current .label{ color:var(--signal); }
+  .stage .desc{
+    font-size:13px;
+    color:var(--muted);
+    margin-top:4px;
+    max-width:20ch;
+  }
+
+  /* ---------- CTA / FOOTER ---------- */
+  .cta-final{
+    padding:70px 0 60px;
+    text-align:center;
+  }
+  .cta-final h2{
+    font-family:var(--font-display);
+    font-size:30px;
+    font-weight:700;
+    margin:0 0 12px;
+    letter-spacing:-0.01em;
+  }
+  .cta-final p{
+    color:var(--muted);
+    font-size:15px;
+    margin:0 0 28px;
+  }
+  footer{
+    border-top:1px solid var(--panel-line);
+    padding:28px 0;
+  }
+  .foot-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-family:var(--font-mono);
+    font-size:12px;
+    color:var(--muted);
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  @media (max-width: 760px){
+    .hero-grid{ grid-template-columns:1fr; }
+    h1{ font-size:32px; }
+    .split{ grid-template-columns:1fr; }
+    .split-col:first-child{
+      border-right:none;
+      border-bottom:1px solid var(--panel-line);
+      padding-bottom:36px;
+      margin-bottom:36px;
+    }
+    .split-col{ padding:0; }
+    .rail{ grid-template-columns:1fr; }
+    .stage-track{ flex-direction:column; gap:22px; }
+    .stage-track::before, .stage-track::after{ display:none; }
+    .stage{ padding-top:0; padding-left:24px; }
+    .stage .dot{ top:3px; left:0; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .wave-path{ animation:none; stroke-dashoffset:0; }
+    .bars rect{ animation:none; opacity:1; transform:scaleY(1); }
+  }
+</style>
+</head>
+<body>
+
+  <header>
+    <div class="wrap">
+      <nav>
+        <a class="logo" href="#top">
+          <svg class="logo-mark" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="8" width="2.4" height="4" rx="1" fill="#2BD9A8"/>
+            <rect x="6.6" y="4" width="2.4" height="12" rx="1" fill="#2BD9A8"/>
+            <rect x="11.2" y="1" width="2.4" height="18" rx="1" fill="#2BD9A8"/>
+            <rect x="15.8" y="6" width="2.4" height="8" rx="1" fill="#2BD9A8"/>
+          </svg>
+          Flowtix
+        </a>
+        <div class="nav-right">
+          <span class="status-pill"><span class="status-dot"></span> MVP in build</span>
+          <a class="btn" href="mailto:tuqasaeed3@gmail.com">Get in touch</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" id="top">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow mono-label">Voice of Customer automation</div>
+        <h1>From raw customer<br>voice to <em>board-ready</em><br>signal.</h1>
+        <p class="lede">Flowtix turns scattered customer feedback into a single automated pipeline — from survey generation to executive summary — so no signal gets lost in a spreadsheet.</p>
+        <div class="hero-ctas">
+          <a class="btn" href="mailto:tuqasaeed3@gmail.com">Get in touch</a>
+          <a class="btn btn-ghost" href="#solution">See how it works</a>
+        </div>
+      </div>
+
+      <div class="signal-card">
+        <div class="cap"><span>INPUT · raw feedback</span><span>OUTPUT · structured signal</span></div>
+        <svg class="wave" viewBox="0 0 340 120" xmlns="http://www.w3.org/2000/svg">
+          <path class="wave-path" d="M0,60 C15,20 30,100 45,60 C60,20 75,100 90,60 C105,25 120,95 135,60 C150,30 165,90 180,62" />
+          <g class="bars">
+            <rect x="200" y="70" width="10" height="35" rx="2" style="animation-delay:1.2s"/>
+            <rect x="216" y="45" width="10" height="60" rx="2" style="animation-delay:1.32s"/>
+            <rect x="232" y="55" width="10" height="50" rx="2" style="animation-delay:1.44s"/>
+            <rect x="248" y="30" width="10" height="75" rx="2" style="animation-delay:1.56s"/>
+            <rect x="264" y="60" width="10" height="45" rx="2" style="animation-delay:1.68s"/>
+            <rect x="280" y="40" width="10" height="65" rx="2" style="animation-delay:1.8s"/>
+            <rect x="296" y="65" width="10" height="40" rx="2" style="animation-delay:1.92s"/>
+            <rect x="312" y="50" width="10" height="55" rx="2" style="animation-delay:2.04s"/>
+          </g>
+        </svg>
+        <div class="foot"><span>waveform · unstructured</span><span>flow · automated</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="split" id="solution">
+    <div class="wrap" style="display:grid; grid-template-columns:1fr 1fr;">
+      <div class="split-col">
+        <span class="mono-label">The problem</span>
+        <h2>Feedback comes in everywhere. Structure doesn't.</h2>
+        <p>Teams collect customer opinions across email, in-app, and support channels, but approvals, escalation, and reporting are still handled by hand — slow, inconsistent, and easy to lose track of.</p>
+      </div>
+      <div class="split-col">
+        <span class="mono-label">The solution</span>
+        <h2>One pipeline, fully automated.</h2>
+        <p>Flowtix uses Claude AI to draft tailored survey questions, routes them through manager approval and auto-delegation on n8n, sends individualized links to each customer, and alerts teams by email and WhatsApp with AI-compiled executive summaries — without manual handoffs.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="rail-section">
+    <div class="wrap">
+      <div class="rail-head">
+        <div>
+          <span class="mono-label">The pipeline</span>
+          <h2>Nine workflows, one continuous flow</h2>
+        </div>
+        <p>Every stage a customer response passes through, from first draft to boardroom, already automated in the current build.</p>
+      </div>
+      <div class="rail">
+        <div class="rail-item"><span class="n">WF-1</span><span class="t">AI survey generator</span></div>
+        <div class="rail-item"><span class="n">WF-2</span><span class="t">Survey activation alert</span></div>
+        <div class="rail-item"><span class="n">WF-3</span><span class="t">Approval action handler</span></div>
+        <div class="rail-item"><span class="n">WF-4</span><span class="t">Auto-delegation · 30 min</span></div>
+        <div class="rail-item"><span class="n">WF-5</span><span class="t">Manual delegation</span></div>
+        <div class="rail-item"><span class="n">WF-6</span><span class="t">Customer survey link generator</span></div>
+        <div class="rail-item"><span class="n">WF-7</span><span class="t">Correction alert</span></div>
+        <div class="rail-item"><span class="n">WF-8</span><span class="t">Dashboard stats sync · 15 min</span></div>
+        <div class="rail-item"><span class="n">WF-9</span><span class="t">Auto survey expiry · daily 1 AM</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stage-section">
+    <div class="wrap">
+      <span class="mono-label">Where we are</span>
+      <h2>Building the MVP</h2>
+      <div class="stage-track">
+        <div class="stage done">
+          <div class="dot"></div>
+          <div class="label">Problem validated</div>
+          <div class="desc">Confirmed with CX teams across pilot accounts.</div>
+        </div>
+        <div class="stage done">
+          <div class="dot"></div>
+          <div class="label">Proof of concept</div>
+          <div class="desc">9 workflows built and tested end to end.</div>
+        </div>
+        <div class="stage current">
+          <div class="dot"></div>
+          <div class="label">MVP build</div>
+          <div class="desc">Hardening the pipeline for first customers.</div>
+        </div>
+        <div class="stage">
+          <div class="dot"></div>
+          <div class="label">Pilot launch</div>
+          <div class="desc">Onboarding early design partners.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-final">
+    <div class="wrap">
+      <h2>Let's put your customer voice to work.</h2>
+      <p>We're onboarding a small group of design partners for the pilot.</p>
+      <a class="btn" href="mailto:tuqasaeed3@gmail.com">Get in touch</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap foot-row">
+      <span>© 2026 Flowtix. All rights reserved.</span>
+      <span>tuqasaeed3@gmail.com</span>
+    </div>
+  </footer>
+
+</body>
+</html>
